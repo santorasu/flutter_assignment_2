@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.teal,
           foregroundColor: Colors.white,
           centerTitle: true
-        )
+        ),
+        scaffoldBackgroundColor: Colors.grey.shade300
       ),
       home: MyHomePage(),
     );
@@ -26,13 +27,64 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
+   MyHomePage({super.key});
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
     return  Scaffold(
       appBar: AppBar(
         title: Text('Contact List'),
+      ),
+
+      body: Column(
+        children: [
+          Form(
+              key: _formKey,
+              child: Padding(padding: EdgeInsets.all(10),child: Column(
+            children: [
+              TextFormField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Name"
+                  ),
+                validator: (value){
+                    if(value ==null || value.isEmpty){
+                      return "Please Enter Your Name";
+                    }
+                    return null;
+                },
+              ),
+              SizedBox(height: 20,),
+              TextFormField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Number",
+                  ),
+                keyboardType: TextInputType.number,
+                validator: (value){
+                    if(value == null || value.isEmpty){
+                      return "Please Enter Your Number";
+                    }
+                    return null;
+                },
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                  width: double.infinity,
+
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          enabledMouseCursor: MouseCursor.defer
+                      ),
+                      onPressed: (){
+                        if(_formKey.currentState!.validate()){
+                          print("Success");
+                        }
+                      }, child: Text("Add",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)))
+            ],
+          ),))
+        ],
       ),
     );
   }
