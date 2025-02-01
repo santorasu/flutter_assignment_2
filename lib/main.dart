@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,9 +16,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.teal,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.teal,
+          backgroundColor: Color.fromRGBO(102, 124, 137,1),
           foregroundColor: Colors.white,
           centerTitle: true,
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          )
         ),
         scaffoldBackgroundColor: Colors.grey.shade300,
       ),
@@ -38,12 +43,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController numberController = TextEditingController();
 
-  List<Map<String, String>> _contacts = [];
+  final List<Map<String, String>> _contacts = [];
 
   void _addContact() {
     if (nameController.text.isNotEmpty && numberController.text.isNotEmpty) {
       setState(() {
-        _contacts.add({
+        _contacts.insert(0, {
           "name": nameController.text,
           "number": numberController.text,
         });
@@ -52,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
   }
+
 
   void _deleteContact(int index) {
     setState(() {
@@ -64,8 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Delete Contact"),
-          content: const Text("Are you sure you want to delete this contact?"),
+          title: const Text("Confirmation",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+          content: const Text("Are you sure for Delete?"),
           actions: [
             IconButton(
               onPressed: () => Navigator.pop(context),
@@ -122,6 +128,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please Enter Your Number";
+                        }
+                      if (value.length < 10 || value.length > 11) {
+                        return "Please Enter 11 Number";
                       }
                       return null;
                     },
@@ -131,7 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.teal,
+                        backgroundColor: const Color.fromRGBO(102, 124, 137,1),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -160,15 +170,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   return GestureDetector(
                     onLongPress: () => _showDeleteDialog(index),
                     child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      // margin: const EdgeInsets.symmetric(vertical: 5),
+                      // elevation: 5,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                       child: ListTile(
                         title: Text(_contacts[index]["name"]!),
                         subtitle: Text(_contacts[index]["number"]!),
                         leading: const Icon(Icons.person,size: 40,),
                         trailing: const Icon(Icons.call,size: 30,color: Colors.blueAccent,),
                         titleTextStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.bold,fontSize: 15),
+
                       ),
                     ),
                   );
